@@ -1,0 +1,54 @@
+# ==========================================
+# 1. SECRETS ET CONFIGURATION (CRITIQUE)
+# ==========================================
+# Exigence de sécurité : Ne jamais commiter ces fichiers
+.env
+.env.*
+*.pem
+secrets.json
+
+# ==========================================
+# 2. POIDS DES MODÈLES IA (Fichiers trop lourds)
+# ==========================================
+# À gérer via Git LFS ou lien de téléchargement externe
+*.pt
+*.pth
+backend/weights/*.pt
+backend/weights/*.pth
+
+# ==========================================
+# 3. JEUX DE DONNÉES (Data)
+# ==========================================
+# CIFAR-10 et autres datasets doivent être retéléchargés localement
+data/
+datasets/
+cifar-10-batches-py/
+*.tar.gz
+
+# ==========================================
+# 4. ENVIRONNEMENTS VIRTUELS PYTHON
+# ==========================================
+.venv/
+venv/
+env/
+ENV/
+
+# ==========================================
+# 5. DÉPENDANCES FRONTEND (React)
+# ==========================================
+node_modules/
+frontend/node_modules/
+dist/
+build/
+.npm/
+
+# ==========================================
+# 6. CACHE, LOGS ET FICHIERS SYSTÈME
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+*.log
+.DS_Store
+Thumbs.db
