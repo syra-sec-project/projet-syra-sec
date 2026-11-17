@@ -1,0 +1,17 @@
+### 1. Test de l'inscription (Créer un compte)
+POST http://127.0.0.1:5000/auth/register
+Content-Type: application/json
+
+{
+  "username": "etudiant1",
+  "password": "mon_mot_de_passe_securise"
+}
+
+### 2. Test de la connexion (Récupérer le Token JWT)
+POST http://127.0.0.1:5000/auth/login
+Content-Type: application/json
+
+{
+  "username": "etudiant1",
+  "password": "mon_mot_de_passe_securise"
+}`
