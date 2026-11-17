@@ -1,0 +1,27 @@
+# API REST et Sécurité
+flask
+flask-cors
+flask-jwt-extended
+flask-sqlalchemy
+flask-limiter
+flask-talisman
+argon2-cffi
+marshmallow
+
+# Machine Learning et Attaques
+torch
+torchvision
+torchattacks
+adversarial-robustness-toolbox
+numpy
+scipy
+scikit-learn
+scikit-image
+matplotlib
+pillow
+
+# Qualité et Tests
+pytest
+black
+flake8
+pip-audit
