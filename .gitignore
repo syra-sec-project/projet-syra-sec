@@ -16,6 +16,9 @@ secrets.json
 backend/weights/*.pt
 backend/weights/*.pth
 
+# Exception : poids du modèle de base (~2,5 Mo), partagés avec l'équipe
+!backend/ml_core/weights/*.pt
+
 # ==========================================
 # 3. JEUX DE DONNÉES (Data)
 # ==========================================
@@ -52,3 +55,5 @@ __pycache__/
 *.log
 .DS_Store
 Thumbs.db
+
+
