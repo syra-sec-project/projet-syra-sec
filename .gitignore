@@ -2,6 +2,9 @@
 # 1. SECRETS ET CONFIGURATION (CRITIQUE)
 # ==========================================
 # Exigence de sécurité : Ne jamais commiter ces fichiers
+.idea/
+*.db
+backend/instance/
 .env
 .env.*
 *.pem

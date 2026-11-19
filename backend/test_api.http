@@ -1,5 +1,5 @@
-### 1. Test de l'inscription (Créer un compte)
-POST http://127.0.0.1:5000/auth/register
+### Connexion et capture automatique du token
+POST http://127.0.0.1:5000/auth/login
 Content-Type: application/json
 
 {
@@ -7,11 +7,11 @@ Content-Type: application/json
   "password": "mon_mot_de_passe_securise"
 }
 
-### 2. Test de la connexion (Récupérer le Token JWT)
-POST http://127.0.0.1:5000/auth/login
-Content-Type: application/json
+> {% client.global.set("auth_token", response.body.access_token); %}
 
-{
-  "username": "etudiant1",
-  "password": "mon_mot_de_passe_securise"
-}`
+### Vérification de la session active (avec token)
+GET http://127.0.0.1:5000/auth/me
+Authorization: Bearer {{auth_token}}
+
+### Test d'accès refusé (sans token -> doit renvoyer 401)
+GET http://127.0.0.1:5000/auth/me

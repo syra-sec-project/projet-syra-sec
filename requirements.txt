@@ -7,6 +7,7 @@ flask-limiter
 flask-talisman
 argon2-cffi
 marshmallow
+python-dotenv
 
 # Machine Learning et Attaques
 torch
