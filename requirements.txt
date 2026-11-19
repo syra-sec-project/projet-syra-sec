@@ -26,3 +26,4 @@ black
 flake8
 pip-audit
 torchattacks
+torchattacks
