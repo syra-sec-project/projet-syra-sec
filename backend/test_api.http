@@ -1,4 +1,4 @@
-### 1. Test de l'inscription (Créer un compte)
+### 1. Inscription (crée le compte dans la base neuve)
 POST http://127.0.0.1:5000/auth/register
 Content-Type: application/json
 
@@ -7,11 +7,62 @@ Content-Type: application/json
   "password": "mon_mot_de_passe_securise"
 }
 
-### 2. Test de la connexion (Récupérer le Token JWT)
+### 2. Connexion et capture automatique du token
 POST http://127.0.0.1:5000/auth/login
 Content-Type: application/json
 
 {
   "username": "etudiant1",
   "password": "mon_mot_de_passe_securise"
-}`
+}
+
+> {%
+  if (response.status === 200 && response.body.access_token) {
+    client.global.set("auth_token", response.body.access_token);
+  }
+%}
+
+### 3. Vérification de la session active (avec token)
+GET http://127.0.0.1:5000/auth/me
+Authorization: Bearer {{auth_token}}
+
+### 4. Test d'accès refusé (sans token -> doit renvoyer 401)
+GET http://127.0.0.1:5000/auth/me
+
+### 5. Prédiction IA (Mock)
+POST http://127.0.0.1:5000/api/predict
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "image_name": "chat_cifar10.png",
+  "image_base64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+}
+
+### 6. Attaque adversariale - Square Attack (Mock)
+POST http://127.0.0.1:5000/api/attack
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "image_name": "chat_cifar10.png",
+  "attack_type": "square_attack",
+  "epsilon": 0.05,
+  "n_queries": 1000
+}
+
+### 7. Défense - Randomized Smoothing (Mock)
+POST http://127.0.0.1:5000/api/defend
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "image_name": "chat_cifar10.png",
+  "defense_type": "randomized_smoothing",
+  "sigma": 0.25,
+  "n_samples": 100
+}
+
+### 8. Historique des expériences de l'utilisateur connecté
+GET http://127.0.0.1:5000/api/history?limit=10
+Authorization: Bearer {{auth_token}}
