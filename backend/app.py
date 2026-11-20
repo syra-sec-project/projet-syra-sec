@@ -7,8 +7,9 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from models import db
 from routes import auth_bp
+from routes_api import api_bp
 
-# Charge le fichier .env situé à la racine du projet (un niveau au-dessus de backend/)
+# Charge le fichier .env situé à la racine du projet
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
 
@@ -20,6 +21,7 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///syra_dev.db')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY', 'cle_dev_a_remplacer_dans_env')
+    app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # Limite d'upload : 5 Mo
 
     # Durée d'expiration du token JWT (2 heures par défaut)
     expires_hours = int(os.environ.get('JWT_EXPIRES_HOURS', 2))
@@ -30,7 +32,7 @@ def create_app():
     db.init_app(app)
     jwt = JWTManager(app)
 
-    # Réponses standardisées si le token est absent, invalide ou expiré
+    # Gestion propre des erreurs JWT et upload
     @jwt.expired_token_loader
     def expired_token_callback(jwt_header, jwt_payload):
         return jsonify({"msg": "Votre session a expiré, veuillez vous reconnecter."}), 401
@@ -43,8 +45,13 @@ def create_app():
     def missing_token_callback(error):
         return jsonify({"msg": "Authentification requise (token manquant)."}), 401
 
-    # Enregistrement des routes d'authentification
+    @app.errorhandler(413)
+    def file_too_large(error):
+        return jsonify({"msg": "Fichier trop volumineux (limite : 5 Mo)."}), 413
+
+    # Enregistrement des Blueprints
     app.register_blueprint(auth_bp, url_prefix='/auth')
+    app.register_blueprint(api_bp, url_prefix='/api')
 
     # Création des tables SQLite si inexistantes
     with app.app_context():
